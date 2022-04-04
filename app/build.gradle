@@ -61,3 +61,18 @@ dependencies {
     androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
     debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
 }
+
+detekt {
+    source = files(projectDir)
+    config = files("${project.rootDir}/config/detekt/detekt.yml")
+    parallel = true
+    reports {
+        txt.enabled = false
+        xml.enabled = false
+        sarif.enabled = false
+        html {
+            enabled = true
+            destination = file("build/reports/detekt.html")
+        }
+    }
+}
