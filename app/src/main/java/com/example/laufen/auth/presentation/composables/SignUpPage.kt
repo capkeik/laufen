@@ -1,4 +1,4 @@
-package com.example.laufen.composables
+package com.example.laufen.auth.presentation.composables
 
 import androidx.compose.runtime.Composable
 

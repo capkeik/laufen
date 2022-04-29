@@ -10,7 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.laufen.composables.SignInPage
+import com.example.laufen.auth.presentation.composables.SignInPage
 import com.example.laufen.ui.theme.LaufenTheme
 
 class LoginActivity : ComponentActivity() {
