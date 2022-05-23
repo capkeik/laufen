@@ -16,16 +16,24 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.laufen.R
+import com.example.laufen.auth.domain.LoadingState
+import com.example.laufen.auth.presentation.LoginViewModel
 import com.example.laufen.ui.theme.whiteBackground
 
 @Composable
-fun SignInPage(navController: NavController) {
+fun SignInPage(
+    navController: NavController,
+    viewModel: LoginViewModel
+) {
     var emailValue by remember { mutableStateOf("") }
     var passwordValue by remember { mutableStateOf("") }
+    val state by viewModel.loadingState.collectAsState()
 
     val passwordVisibility = remember { mutableStateOf(false) }
 
-    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.BottomCenter) {
+    Box(modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.BottomCenter
+    ) {
 
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -70,7 +78,9 @@ fun SignInPage(navController: NavController) {
                 }
             )
             Spacer(modifier = Modifier.padding(10.dp))
-            TextButton("Sign In")
+            TextButton("Sign In") {
+                viewModel.signInWithEmailAndPassword(emailValue, passwordValue)
+            }
 
             Spacer(modifier = Modifier.padding(20.dp))
             Text(
@@ -82,18 +92,32 @@ fun SignInPage(navController: NavController) {
                 })
             )
             Spacer(modifier = Modifier.padding(20.dp))
+
+            when(state.status) {
+                LoadingState.Status.SUCCESS -> {
+                    Text(text = "Success")
+                }
+                LoadingState.Status.FAILED -> {
+                    Text(text = state.msg ?: "Error")
+                }
+                else -> {}
+            }
         }
     }
 }
 
 @Composable
-fun TextButton(text: String = "") {
+fun TextButton(
+    text: String = "",
+    onClick: () -> Unit
+) {
     Button(
-        onClick = {},
+        onClick = { onClick() },
         modifier = Modifier
             .fillMaxWidth(0.8f)
             .height(50.dp)
     ) {
         Text(text = text, fontSize = 20.sp)
     }
-}
+    }
+
