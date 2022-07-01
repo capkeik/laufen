@@ -10,7 +10,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.laufen.maps.nav.BottomNavItem
-import com.example.laufen.maps.nav.nested.ActivityScreens
 
 @Composable
 fun BottomNavBar(

@@ -8,7 +8,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.laufen.maps.nav.nested.*
+import com.example.laufen.maps.nav.nested.ActivityScreens
 import com.example.laufen.maps.presentation.composables.BottomNavBar
 import com.example.laufen.ui.theme.LaufenTheme
 
@@ -30,7 +30,8 @@ fun App() {
         ) {
             MainNavHost(
                 navController = navController,
-                startDestination = ActivityScreens.Activity.route)
+                startDestination = ActivityScreens.Activity.route
+            )
         }
     }
 }
