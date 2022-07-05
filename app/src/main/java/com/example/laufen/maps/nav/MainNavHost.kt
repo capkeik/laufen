@@ -7,10 +7,7 @@ import androidx.navigation.compose.composable
 import com.example.laufen.maps.nav.nested.ActivityScreens
 import com.example.laufen.maps.nav.nested.ProfileScreens
 import com.example.laufen.maps.nav.nested.ProgressScreens
-import com.example.laufen.maps.presentation.ActivityScreen
-import com.example.laufen.maps.presentation.ProfileScreen
-import com.example.laufen.maps.presentation.ProgressScreen
-import com.example.laufen.maps.presentation.TrainingScreen
+import com.example.laufen.maps.presentation.*
 
 @Composable
 fun MainNavHost(
@@ -29,6 +26,9 @@ fun MainNavHost(
         }
         composable(ProgressScreens.Progress.route) {
             ProgressScreen(navController)
+        }
+        composable(ProgressScreens.Schedule.route) {
+            ScheduleScreen()
         }
         composable(ProfileScreens.Profile.route) {
             ProfileScreen(navController)
