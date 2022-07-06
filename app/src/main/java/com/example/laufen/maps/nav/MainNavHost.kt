@@ -8,6 +8,7 @@ import com.example.laufen.maps.nav.nested.ActivityScreens
 import com.example.laufen.maps.nav.nested.ProfileScreens
 import com.example.laufen.maps.nav.nested.ProgressScreens
 import com.example.laufen.maps.presentation.*
+import com.example.laufen.maps.presentation.schedule.ScheduleScreen
 
 @Composable
 fun MainNavHost(
