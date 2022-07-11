@@ -18,13 +18,13 @@ class ScheduleRepositoryPrefs(
 
     override fun getAlarms(): List<ScheduleEntity> = getAlarmsList()
 
-    override fun getNextAlarm(): ScheduleEntity {
+    override fun getNextAlarm(): ScheduleEntity? {
         val lst = getAlarmsList()
-        val current = lst[0]
+        val current = if (lst.isNotEmpty()) lst[0] else null
         lst.remove(current)
-        current.addWeek()
-        lst.add(current)
-        return lst[0]
+        current?.addWeek()
+        current?.let { lst.add(it) }
+        return if (lst.isNotEmpty()) lst[0] else null
     }
 
     override fun addAlarms(plans: List<ScheduleEntity>) {

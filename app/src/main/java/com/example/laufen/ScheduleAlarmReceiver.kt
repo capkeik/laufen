@@ -9,20 +9,15 @@ import android.os.Build
 import androidx.core.app.NotificationCompat
 import com.example.laufen.data.schedule.ScheduleRepositoryPrefs
 import com.example.laufen.data.schedule.Scheduler
-import com.example.laufen.data.schedule.entity.ScheduleEntity
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 
-
-const val currentExtra = "currentExtra"
 
 class ScheduleAlarmReceiver : BroadcastReceiver() {
-    private val gson = Gson()
     override fun onReceive(context: Context, intent: Intent) {
         val repository = ScheduleRepositoryPrefs(context)
-        val parseType = object : TypeToken<ScheduleEntity>() {}.type
-        val current = gson.fromJson<ScheduleEntity>(intent.getStringExtra(currentExtra), parseType)
-        Scheduler.setSingleAlarm(context, repository.getNextAlarm().millis)
+        val next = repository.getNextAlarm()
+        next?.let {
+            Scheduler.setSingleAlarm(context, it.millis)
+        }
         showNotification(context, "БЕГИ, СУКА, БЕГИИИИИ!!!!!!!", "пора на треню")
     }
 }

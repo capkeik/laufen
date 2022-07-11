@@ -23,12 +23,17 @@ class ScheduleViewModel : ViewModel() {
         val newList: MutableList<ScheduleEntity> = viewState
             .value?.schedule?.toMutableList() ?: mutableListOf()
         newList += scheduleToAdd
-        newList.sortWith(
+        putToState(newList)
+    }
+
+    private fun putToState(newList: List<ScheduleEntity>) {
+        newList.toMutableList().sortWith(
             compareBy<ScheduleEntity>
             { it.dayOfWeek }.thenBy
             { it.hour }.thenBy
             { it.minute }
         )
+        newList.distinct()
         _viewState.postValue(
             viewState.value?.copy(
                 schedule = newList
@@ -54,7 +59,23 @@ class ScheduleViewModel : ViewModel() {
         }
         addToState(newScheduleElements)
         scheduleRepository.addAlarms(newScheduleElements)
+        updateAlarms(context)
+    }
+
+    fun deleteAlarm(schedule: ScheduleEntity, context: Context) {
+        val oldList = _viewState.value?.schedule ?: listOf()
+        val newList = oldList.toMutableList()
+        newList.remove(schedule)
+        putToState(newList)
+        scheduleRepository.removeAlarm(schedule)
+        updateAlarms(context)
+    }
+
+    private fun updateAlarms(context: Context) {
         Scheduler.deleteAlarms(context)
-        Scheduler.setSingleAlarm(context, scheduleRepository.getNextAlarm().millis)
+        val next = scheduleRepository.getNextAlarm()
+        next?.let {
+            Scheduler.setSingleAlarm(context, it.millis)
+        }
     }
 }
