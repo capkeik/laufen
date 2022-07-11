@@ -1,4 +1,4 @@
-package com.example.laufen.maps.presentation
+package com.example.laufen.ui.screens
 
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable

@@ -1,4 +1,4 @@
-package com.example.laufen.maps.presentation.composables
+package com.example.laufen.ui.composables
 
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
@@ -9,7 +9,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.res.painterResource
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.example.laufen.maps.nav.BottomNavItem
+import com.example.laufen.nav.BottomNavItem
 
 @Composable
 fun BottomNavBar(

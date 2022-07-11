@@ -9,7 +9,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.laufen.maps.nav.nested.ActivityScreens
+import com.example.laufen.nav.nested.ActivityScreens
 
 @Composable
 fun ActivityScreen(

@@ -1,4 +1,4 @@
-package com.example.laufen.maps.nav
+package com.example.laufen.nav
 
 import com.example.laufen.R
 
