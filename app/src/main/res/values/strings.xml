@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Laufen</string>
+    <string name="SCHEDULE_PREFS_FILE">SCHEDULE_PREFS_FILE</string>
+    <string name="SCHEDULE_PREFS_TAG">SCHEDULE_PREFS_TAG</string>
 </resources>
