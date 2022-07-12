@@ -4,18 +4,24 @@ import android.app.TimePickerDialog
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.Button
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.R
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.laufen.data.schedule.entity.ScheduleEntity
+import com.example.laufen.data.schedule.format
+import com.example.laufen.ui.composables.DayOfWeekPicker
+import com.example.laufen.ui.theme.Shapes
 import java.util.*
+import kotlin.math.min
 
 @Composable
 fun ScheduleScreen() {
@@ -24,14 +30,19 @@ fun ScheduleScreen() {
     val context = LocalContext.current
 
     val calendar = Calendar.getInstance()
-    val hourOfDay = calendar[Calendar.HOUR_OF_DAY]
-    val minute = calendar[Calendar.MINUTE]
+    var hourOfDay = calendar[Calendar.HOUR_OF_DAY]
+    var minute = calendar[Calendar.MINUTE]
+    var dayOfWeek = 0
+
+    val openDialog = remember { mutableStateOf(false) }
 
     val viewState: State<ScheduleViewState> = viewModel.viewState.observeAsState(ScheduleViewState())
     val timePickerDialog = TimePickerDialog(
         context,
         { _, hour: Int, mMinute: Int ->
-            viewModel.addSchedule(hour, mMinute, listOf(0), context)
+            hourOfDay = hour
+            minute = mMinute
+            openDialog.value = true
         }, hourOfDay, minute, false
     )
 
@@ -41,6 +52,15 @@ fun ScheduleScreen() {
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        if (openDialog.value) {
+            DayOfWeekPicker(onDowClick = {
+                dayOfWeek = it
+                viewModel.addSchedule(hourOfDay, minute, listOf(dayOfWeek), context)
+                openDialog.value = false
+            }) {
+                openDialog.value = false
+            }
+        }
         Button(
             onClick = { timePickerDialog.show() }
         ) {
@@ -48,7 +68,11 @@ fun ScheduleScreen() {
         }
         LazyColumn {
             items(viewState.value.schedule) { item: ScheduleEntity ->
-                ScheduleItem(item = item)
+                ScheduleItem(
+                    item = item,
+                ) {
+                    viewModel.deleteAlarm(item, context)
+                }
             }
         }
         Spacer(modifier = Modifier.size(100.dp))
@@ -56,12 +80,42 @@ fun ScheduleScreen() {
 }
 
 @Composable
-fun ScheduleItem(item: ScheduleEntity) {
-    Row(
-        modifier = Modifier.padding(8.dp),
-        horizontalArrangement = Arrangement.SpaceBetween
+fun ScheduleItem(
+    item: ScheduleEntity,
+    onClick: () -> Unit
+) {
+    Card(
+        elevation = 4.dp,
+        modifier = Modifier
+            .padding(4.dp),
+        shape = Shapes.medium
     ) {
-        Text("${item.hour}:${item.minute}")
-        Text(item.dayOfWeek.toString())
+        Row(
+            modifier = Modifier
+                .padding(4.dp)
+                .fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(item.format())
+            IconButton(onClick = onClick) {
+                Icon(
+                    painter = painterResource(id = com.example.laufen.R.drawable.ic_round_delete),
+                    contentDescription = "Delete button"
+                )
+            }
+        }
     }
+}
+
+@Composable
+@Preview
+fun ScheduleItemPreview() {
+    ScheduleItem(
+        ScheduleEntity(
+            0,
+            0,
+            0
+        )
+    ) { }
 }

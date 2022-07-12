@@ -1,5 +1,6 @@
 package com.example.laufen.data.schedule
 
+import com.example.laufen.data.daysOfWeek
 import com.example.laufen.data.schedule.entity.ScheduleEntity
 import java.util.Calendar
 
@@ -22,4 +23,11 @@ fun ScheduleEntity.addWeek() {
         add(Calendar.WEEK_OF_YEAR, 1)
     }
     this.millis = calendar.timeInMillis
+}
+
+fun ScheduleEntity.format(): String {
+    val sHour = if (hour > 9) hour.toString() else "0$hour"
+    val sMinute = if (minute > 9) minute.toString() else "0$minute"
+    val sDayOfWeek = daysOfWeek[dayOfWeek]
+    return "$sHour:$sMinute   $sDayOfWeek"
 }
